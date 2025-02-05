@@ -112,7 +112,7 @@ export function JwtSignUpView() {
       }
 
       // Request OTP after successful signup
-      // await axios.post(`${SERVER_URL}/request-otp/`, { email: data.email });
+      await axios.post(`${SERVER_URL}/api/auth/request-otp/`, { email: data.email });
       // await checkUserSession?.();
       // Set success state to true
       // Notify user to check their email
