@@ -13,19 +13,18 @@ export function OTPVerification({ onSuccess }) {
 
   const handleVerifyOTP = async () => {
     try {
-      const token = localStorage.getItem('accessToken');
-      const refreshToken = localStorage.getItem('refreshToken');
-      if (!token) {
-        setError('User is not logged in.');
+      const email = localStorage.getItem('userEmail'); // Retrieve stored email
+      if (!email) {
+        setError('No email found. Please register again.');
         return;
       }
 
       const response = await axios.post(
-        `${SERVER_URL}/verify-otp/`,
-        { otp_code: otp },
+        `${SERVER_URL}/api/auth/verify-otp/`,
+        { email, otp },
         // { otp_verified: true },
-        // { headers: { 'Content-Type': 'application/json' } }
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { 'Content-Type': 'application/json' } }
+        // { headers: { Authorization: `Bearer ${token}` } }
       );
       setSuccess('OTP verified successfully!');
       setError('');
@@ -66,7 +65,13 @@ export function OTPVerification({ onSuccess }) {
 
   return (
     <Box sx={{ mt: 3 }}>
-      <TextField label="Enter OTP" helperText="Please Enter OTP to Verify Email" value={otp} onChange={(e) => setOtp(e.target.value)} fullWidth />
+      <TextField
+        label="Enter OTP"
+        helperText="Please Enter OTP to Verify Email"
+        value={otp}
+        onChange={(e) => setOtp(e.target.value)}
+        fullWidth
+      />
       {error && (
         <Alert severity="error" sx={{ mt: 2 }}>
           {error}

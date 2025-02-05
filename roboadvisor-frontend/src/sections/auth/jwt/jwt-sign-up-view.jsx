@@ -105,6 +105,8 @@ export function JwtSignUpView() {
       if (token) {
         // Store tokens in localStorage for further API requests
         localStorage.setItem('accessToken', token);
+        localStorage.setItem('userEmail', data.email);
+
         setSignupSuccess(true); 
         setVerificationMessage(
         'An OTP Code has been sent to your email. Please verify your email before logging in.'
@@ -112,7 +114,7 @@ export function JwtSignUpView() {
       }
 
       // Request OTP after successful signup
-      await axios.post(`${SERVER_URL}/request-otp/`, { email: data.email });
+      await axios.post(`${SERVER_URL}/api/auth/request-otp/`, { email: data.email });
       // await checkUserSession?.();
       // Set success state to true
       // Notify user to check their email
