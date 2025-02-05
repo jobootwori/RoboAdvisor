@@ -6,6 +6,9 @@ const UserSchema = new mongoose.Schema({
     email: { type: String, unique: true, required: true },
     password: { type: String, required: true },
     role: { type: String, enum: ['User', 'Admin'], default: 'User' },
+    isVerified: { type: Boolean, default: false },  // Email verification flag
+    otp: { type: String }, 
+    otpExpires: { type: Date }, 
 }, { timestamps: true });
 
 // Hash password before saving

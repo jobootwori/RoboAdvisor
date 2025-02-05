@@ -28,8 +28,7 @@ import { OTPVerification } from 'src/sections/auth/jwt/otp-verification-view';
 import { signUp } from 'src/auth/context/jwt';
 
 import { useAuthContext } from 'src/auth/hooks';
-const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
-
+const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL; 
 // ----------------------------------------------------------------------
 
 export const SignUpSchema = zod
@@ -89,35 +88,35 @@ export function JwtSignUpView() {
   const onSubmit = handleSubmit(async (data) => {
     try {
       const response = await axios.post(
-        `${SERVER_URL}/register/`,
+        `${SERVER_URL}/api/auth/register/`,
         {
           email: data.email,
           password: data.password,
-          password2: data.confirmPassword,
           first_name: data.first_name,
           last_name: data.last_name,
         },
         { headers: { 'Content-Type': 'application/json' } }
       );
+      // console.log(`${SERVER_URL}/register/`);
+      // Extract  tokens
+      console.log(response.data);
+      const { token } = response.data;
 
-      // Extract access and refresh tokens
-      const { access, refresh } = response.data;
-
-      if (access) {
+      if (token) {
         // Store tokens in localStorage for further API requests
-        localStorage.setItem('accessToken', access);
-        localStorage.setItem('refreshToken', refresh);
-      }
-
-      
-      // Request OTP after successful signup
-      await axios.post(`${SERVER_URL}/request-otp/`, { email: data.email });
-      // await checkUserSession?.();
-      setSignupSuccess(true); // Set success state to true
-      // Notify user to check their email
-      setVerificationMessage(
+        localStorage.setItem('accessToken', token);
+        setSignupSuccess(true); 
+        setVerificationMessage(
         'An OTP Code has been sent to your email. Please verify your email before logging in.'
       );
+      }
+
+      // Request OTP after successful signup
+      // await axios.post(`${SERVER_URL}/request-otp/`, { email: data.email });
+      // await checkUserSession?.();
+      // Set success state to true
+      // Notify user to check their email
+      
 
       // router.push(paths.auth.jwt.signIn); // Redirect to sign in page after successful registration
     } catch (error) {
