@@ -28,7 +28,7 @@ import { OTPVerification } from 'src/sections/auth/jwt/otp-verification-view';
 import { signUp } from 'src/auth/context/jwt';
 
 import { useAuthContext } from 'src/auth/hooks';
-const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL; 
+const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 // ----------------------------------------------------------------------
 
 export const SignUpSchema = zod
@@ -107,10 +107,10 @@ export function JwtSignUpView() {
         localStorage.setItem('accessToken', token);
         localStorage.setItem('userEmail', data.email);
 
-        setSignupSuccess(true); 
+        setSignupSuccess(true);
         setVerificationMessage(
-        'An OTP Code has been sent to your email. Please verify your email before logging in.'
-      );
+          'An OTP Code has been sent to your email. Please verify your email before logging in.'
+        );
       }
 
       // Request OTP after successful signup
@@ -118,19 +118,27 @@ export function JwtSignUpView() {
       // await checkUserSession?.();
       // Set success state to true
       // Notify user to check their email
-      
 
       // router.push(paths.auth.jwt.signIn); // Redirect to sign in page after successful registration
     } catch (error) {
       console.error(error);
       if (error.response && error.response.data) {
         // If the error is from the API and contains validation errors
-        const errorMessages = error.response.data;
-        const emailError = errorMessages.email ? errorMessages.email[0] : '';
-        const passwordError = errorMessages.password ? errorMessages.password[0] : '';
+        const errorMessages = error.response?.data;
+        const emailError = Array.isArray(errorMessages.email)
+          ? errorMessages.email[0]
+          : errorMessages.email;
 
-        setErrorMsg(emailError || passwordError);
+        const passwordError = Array.isArray(errorMessages.password)
+          ? errorMessages.password[0]
+          : errorMessages.password;
+
+        setSignupSuccess(false);
+        setVerificationMessage('');
+        setErrorMsg(emailError || passwordError || errorMessages.error);
       } else {
+        setSignupSuccess(false);
+        setVerificationMessage('');
         setErrorMsg('An error occurred.');
       }
     }
