@@ -30,10 +30,18 @@ exports.loginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
         const user = await User.findOne({ email });
+
         if (!user || !(await bcrypt.compare(password, user.password))) {
             return res.status(401).json({ error: 'Invalid credentials' });
         }
+
+        // ✅ Prevent login if email is not verified
+        if (!user.isVerified) {
+            return res.status(403).json({ error: 'Please verify your email before logging in.' });
+        }
+
         const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1d' });
+        
         res.json({ token, user });
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -62,7 +70,6 @@ exports.verifyOTP = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
-
 
 // @route  GET /api/auth/me (Protected)
 exports.getUserProfile = async (req, res) => {
