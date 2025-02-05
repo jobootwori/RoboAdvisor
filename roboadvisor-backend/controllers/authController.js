@@ -8,7 +8,7 @@ exports.registerUser = async (req, res) => {
         const userExists = await User.findOne({ email });
 
         if (userExists) {
-            return res.status(400).json({ error: 'Email already registered' });
+            return res.status(400).json({ message: 'Email already registered' });
         }
 
         // ✅ Generate OTP
