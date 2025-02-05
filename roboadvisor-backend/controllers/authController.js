@@ -25,3 +25,8 @@ exports.loginUser = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+// @route  GET /api/auth/me (Protected)
+exports.getUserProfile = async (req, res) => {
+    res.json(req.user);
+};
