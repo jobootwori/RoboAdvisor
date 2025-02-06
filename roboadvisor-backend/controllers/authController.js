@@ -1,6 +1,8 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const { generateOTP } = require('../utils/generateOtp');
+const { sendOTPEmail } = require('../utils/emailService');
 
 exports.registerUser = async (req, res) => {
     try {
@@ -15,7 +17,9 @@ exports.registerUser = async (req, res) => {
         const otp = generateOTP();
         const otpExpires = new Date(Date.now() + 10 * 60 * 1000); // Expires in 10 min
 
-        const user = await User.create({ name, email, password });
+        const user = await User.create({ name, email, password, otp, otpExpires });
+
+        console.log(`Generated OTP for ${email}: ${otp}`); 
 
         // ✅ Send OTP via Email
         await sendOTPEmail(email, otp);
@@ -42,7 +46,7 @@ exports.loginUser = async (req, res) => {
 
         const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1d' });
         
-        res.json({ token, user });
+        res.json({ token, user:{ id: user._id, email: user.email, role: user.role } });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -73,5 +77,17 @@ exports.verifyOTP = async (req, res) => {
 
 // @route  GET /api/auth/me (Protected)
 exports.getUserProfile = async (req, res) => {
-    res.json(req.user);
+    
+    try {
+        const user = await User.findById(req.user.id).select('-password'); // ✅ Exclude password
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        res.json(user);
+    } catch (error) {
+        res.status(500).json({ error: 'Server error' });
+    }
+    // res.json(req.user);
 };

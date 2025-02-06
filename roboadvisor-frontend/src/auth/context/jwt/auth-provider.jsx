@@ -24,7 +24,11 @@ export function AuthProvider({ children }) {
       if (accessToken && isValidToken(accessToken)) {
         setSession(accessToken);
 
-        const res = await axios.get(endpoints.auth.me);
+        // const res = await axios.get(endpoints.auth.me);
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/auth/me`, {
+  headers: { Authorization: `Bearer ${accessToken}` },
+});
+
 
         const { user } = res.data;
 

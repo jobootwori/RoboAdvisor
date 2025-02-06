@@ -20,7 +20,7 @@ export function OTPVerification({ onSuccess }) {
       }
 
       const response = await axios.post(
-        `${SERVER_URL}/api/auth/verify-otp/`,
+        `${SERVER_URL}/api/auth/verifyotp/`,
         { email, otp },
         // { otp_verified: true },
         { headers: { 'Content-Type': 'application/json' } }
@@ -44,7 +44,7 @@ export function OTPVerification({ onSuccess }) {
 
           // Retry the original request with the new access token
           const retryResponse = await axios.post(
-            `${SERVER_URL}/verify-otp/`,
+            `${SERVER_URL}/api/auth/verifyotp/`,
             { otp_code: otp },
             { headers: { Authorization: `Bearer ${newAccessToken}` } }
           );

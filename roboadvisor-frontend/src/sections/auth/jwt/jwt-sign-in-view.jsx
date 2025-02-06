@@ -75,7 +75,7 @@ export function JwtSignInView() {
       // await signInWithPassword({ email: data.email, password: data.password });
       
       const response = await axios.post(
-       `${SERVER_URL}/login/`,
+       `${SERVER_URL}/api/auth/login`,
         {
           email: data.email, // My backend uses email login
           password: data.password,
@@ -83,10 +83,13 @@ export function JwtSignInView() {
         { headers: { 'Content-Type': 'application/json' } }
       );
 
-      // Store JWT in localStorage
-      const { access, refresh } = response.data;
-      localStorage.setItem('accessToken', access);
-      localStorage.setItem('refreshToken', refresh);
+      // ✅ Extract JWT from response
+        const { token } = response.data; 
+
+        if (token) {
+            localStorage.setItem('accessToken', token);
+            localStorage.setItem('userEmail', data.email); // Store email for future use
+        }
 
       // Check user session
       await checkUserSession?.();
