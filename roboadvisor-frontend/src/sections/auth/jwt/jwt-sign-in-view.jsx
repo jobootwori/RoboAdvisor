@@ -54,7 +54,6 @@ export function JwtSignInView() {
 
   const password = useBoolean();
 
-  
   const defaultValues = {
     email: '',
     password: '',
@@ -73,9 +72,9 @@ export function JwtSignInView() {
   const onSubmit = handleSubmit(async (data) => {
     try {
       // await signInWithPassword({ email: data.email, password: data.password });
-      
+
       const response = await axios.post(
-       `${SERVER_URL}/login/`,
+        `${SERVER_URL}/api/auth/login/`,
         {
           email: data.email, // My backend uses email login
           password: data.password,
@@ -92,11 +91,21 @@ export function JwtSignInView() {
       await checkUserSession?.();
       setIsSignInSuccessful(true);
       // console.log('this should be the loginside token', localStorage.getItem('accessToken'));
-      router.push(paths.dashboard.root); // Redirect to dashboard after successful sign in  
+      router.push(paths.dashboard.root); // Redirect to dashboard after successful sign in
       // router.refresh();
     } catch (error) {
       console.error('Error during Login:', error);
-      setErrorMsg(error.response?.data?.detail || 'Invalid email or password. Please try again.');
+      console.error('Full error response:', error.response); // Log full response
+
+      // Extract error message from different possible response structures
+      const errorMessage =
+        error.response?.data?.detail || // Django-style error
+        error.response?.data?.message || // Other APIs
+        error.response?.data?.error || // Some APIs return { error: "message" }
+        'Invalid email or password. Please try again.';
+
+      setErrorMsg(errorMessage);
+      // setErrorMsg(error.response?.data?.detail || 'Invalid email or password. Please try again.');
     }
   });
 
@@ -118,7 +127,12 @@ export function JwtSignInView() {
 
   const renderForm = (
     <Stack spacing={3}>
-      <Field.Text name="email" label="Email address" placeholder="Odoyo@gmail.com"  InputLabelProps={{ shrink: true }} />
+      <Field.Text
+        name="email"
+        label="Email address"
+        placeholder="Odoyo@gmail.com"
+        InputLabelProps={{ shrink: true }}
+      />
 
       <Stack spacing={1.5}>
         <Link

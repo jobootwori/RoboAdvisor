@@ -124,18 +124,24 @@ export function JwtSignUpView() {
       console.error(error);
       if (error.response && error.response.data) {
         // If the error is from the API and contains validation errors
-        const errorMessages = error.response?.data;
-        const emailError = Array.isArray(errorMessages.email)
-          ? errorMessages.email[0]
-          : errorMessages.email;
+        // const errorMessages = error.response?.data;
+        // const emailError = Array.isArray(errorMessages.email)
+        //   ? errorMessages.email[0]
+        //   : errorMessages.email;
 
-        const passwordError = Array.isArray(errorMessages.password)
-          ? errorMessages.password[0]
-          : errorMessages.password;
+        // const passwordError = Array.isArray(errorMessages.password)
+        //   ? errorMessages.password[0]
+        //   : errorMessages.password;
+
+        const errorMessage =
+          error.response?.data?.detail || // Django-style error
+          error.response?.data?.message || // Other APIs
+          error.response?.data?.error || // Some APIs return { error: "message" }
 
         setSignupSuccess(false);
-        setVerificationMessage('');
-        setErrorMsg(emailError || passwordError || errorMessages.error);
+        
+        setErrorMsg(errorMessage);
+        // setErrorMsg(emailError || passwordError || errorMessages.error);
       } else {
         setSignupSuccess(false);
         setVerificationMessage('');
@@ -240,13 +246,13 @@ export function JwtSignUpView() {
     </Alert>
   );
 
-  {
-    verificationMessage && (
+  
+  const renderVerificationMessage = verificationMessage && (
       <Alert severity="info" sx={{ mb: 3 }}>
         {verificationMessage}
       </Alert>
     );
-  }
+  
 
   const renderTerms = (
     <Typography
@@ -281,6 +287,8 @@ export function JwtSignUpView() {
       )}
 
       {renderSuccess}
+
+      {renderVerificationMessage}
 
       {signupSuccess ? (
         <OTPVerification onSuccess={() => router.push(paths.auth.jwt.signIn)} />
