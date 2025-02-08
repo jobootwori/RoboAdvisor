@@ -37,9 +37,10 @@ export default function Page() {
       {/* Display the Upload component for managing multiple files */}
       <Box>
         <Typography variant="h6" sx={{ mb: 2 }}>
-          Upload and Manage Multiple Files
+        Manage Your Portfolios
         </Typography>
-        <Upload />
+       <PortfolioForm onPortfolioCreated={() => window.location.reload()} />
+            <PortfolioList /> 
       </Box>
     </Box>
   );

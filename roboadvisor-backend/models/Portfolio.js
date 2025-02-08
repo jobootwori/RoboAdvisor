@@ -1,3 +1,4 @@
+
 const mongoose = require('mongoose');
 
 const PortfolioSchema = new mongoose.Schema({
@@ -6,12 +7,13 @@ const PortfolioSchema = new mongoose.Schema({
     assets: [
         {
             symbol: String,
+            name: String,
             quantity: Number,
-            purchasePrice: Number,
-            currentPrice: Number
+            purchasePrice: Number
         }
     ],
-    createdAt: { type: Date, default: Date.now }
-});
+    allocation: { type: Map, of: Number }, // e.g., { "AAPL": 50, "TSLA": 50 }
+    riskLevel: { type: String, enum: ['Low', 'Medium', 'High'], required: true }
+}, { timestamps: true });
 
 module.exports = mongoose.model('Portfolio', PortfolioSchema);
