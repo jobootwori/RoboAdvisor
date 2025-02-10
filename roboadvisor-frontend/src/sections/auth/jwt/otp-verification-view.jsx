@@ -20,45 +20,25 @@ export function OTPVerification({ onSuccess }) {
       }
 
       const response = await axios.post(
-        `${SERVER_URL}/api/auth/verify-otp/`,
+        `${SERVER_URL}/api/auth/verify-otp`,
         { email, otp },
         // { otp_verified: true },
         { headers: { 'Content-Type': 'application/json' } }
         // { headers: { Authorization: `Bearer ${token}` } }
       );
       setSuccess('OTP verified successfully!');
+
+      localStorage.removeItem('accessToken');
+
       setError('');
       onSuccess();
     } catch (error) {
-      if (error.response?.data?.code === 'token_not_valid') {
-        try {
-          // Refresh the token
-          const refreshResponse = await axios.post(
-            `${SERVER_URL}/refresh-token/`,
-            { refresh: refreshToken },
-            { headers: { 'Content-Type': 'application/json' } }
-          );
-
-          const newAccessToken = refreshResponse.data.access;
-          localStorage.setItem('accessToken', newAccessToken);
-
-          // Retry the original request with the new access token
-          const retryResponse = await axios.post(
-            `${SERVER_URL}/verify-otp/`,
-            { otp_code: otp },
-            { headers: { Authorization: `Bearer ${newAccessToken}` } }
-          );
-
-          setSuccess('OTP verified successfully!');
-          setError('');
-          onSuccess();
-        } catch (refreshError) {
-          setError('Failed to refresh token. Please log in again.');
-          console.error('Error refreshing token:', refreshError);
-        }
-      } else {
+      console.error('Error verifying OTP:', error);
+      // Check if the backend sent an error message and display it
+      if (error.response && error.response.data && error.response.data.error) {
+        setError(error.response.data.error)
+         } else {
         setError('Failed to verify OTP. Please try again.');
-        console.error('Error verifying OTP:', error);
       }
     }
   };
