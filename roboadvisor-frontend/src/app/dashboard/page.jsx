@@ -4,6 +4,7 @@ import { CONFIG } from 'src/config-global';
 
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import TopPerformers from 'src/components/marketData/TopPerformers';
 
 
 // ----------------------------------------------------------------------
@@ -42,6 +43,7 @@ export default function Page() {
         <Typography variant="h6" sx={{ mb: 2 }}>
           Get Live Market Data
         </Typography>
+        <TopPerformers />
         <MarketChart />
         {/* <PortfolioForm onPortfolioCreated={() => window.location.reload()} />
             <PortfolioList />  */}

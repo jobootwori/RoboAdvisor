@@ -44,7 +44,7 @@ export default function MarketData() {
                     <div>
                         <Typography variant="h6">{data.symbol}</Typography>
                         <Typography>Price: ${data.price}</Typography>
-                        <Typography>Change: {data.change} ({data.percentChange})</Typography>
+                        <Typography>Change: {data.change} ({data.changesPercentage})</Typography>
                     </div>
                 )}
             </CardContent>
