@@ -83,9 +83,9 @@ export function JwtSignInView() {
       );
 
       // Store JWT in localStorage
-      const { access, refresh } = response.data;
-      localStorage.setItem('accessToken', access);
-      localStorage.setItem('refreshToken', refresh);
+      const { token } = response.data;
+      localStorage.setItem('accessToken', token);
+      localStorage.removeItem('refreshToken');
 
       // Check user session
       await checkUserSession?.();

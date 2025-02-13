@@ -4,8 +4,8 @@ import { CONFIG } from 'src/config-global';
 
 export const _workspaces = [
   {
-    id: 'Digital-Stamper',
-    name: 'Digital Stamper',
+    id: 'RoboAdvisor',
+    name: 'RoboAdvisor',
     logo: `${CONFIG.site.basePath}/assets/icons/workspaces/logo-1.webp`,
     plan: 'New',
   },

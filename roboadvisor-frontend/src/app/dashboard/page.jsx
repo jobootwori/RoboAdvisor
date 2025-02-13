@@ -1,22 +1,26 @@
-"use client";
+// 'use client';
 
 import { CONFIG } from 'src/config-global';
-import { Upload } from 'src/components/upload/upload'; // Import the main upload component
-import { UploadBox } from 'src/components/upload/upload-box'; // Import UploadBox
-import { UploadAvatar } from 'src/components/upload/upload-avatar'; // Import UploadAvatar
+
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import TopPerformers from 'src/components/marketData/TopPerformers';
+
+
+// ----------------------------------------------------------------------
+import dynamic from 'next/dynamic';
 
 // ----------------------------------------------------------------------
 
-// export const metadata = { title: `Dashboard - ${CONFIG.site.name}` };
+const MarketChart = dynamic(() => import('src/components/marketData/MarketChart'), { ssr: false }); // ✅ Fix SSR issue
+export const metadata = { title: `Dashboard - ${CONFIG.site.name}` };
 
 export default function Page() {
   return (
     <Box sx={{ p: 4 }}>
-      <Typography variant="h4" sx={{ mb: 4 }}>
+      {/* <Typography variant="h4" sx={{ mb: 4 }}>
         Document and Image Upload
-      </Typography>
+      </Typography> */}
 
       {/* Display the UploadAvatar for single uploads */}
       {/* <Box sx={{ mb: 4 }}>
@@ -37,10 +41,12 @@ export default function Page() {
       {/* Display the Upload component for managing multiple files */}
       <Box>
         <Typography variant="h6" sx={{ mb: 2 }}>
-        Manage Your Portfolios
+          Get Live Market Data
         </Typography>
-       <PortfolioForm onPortfolioCreated={() => window.location.reload()} />
-            <PortfolioList /> 
+        <TopPerformers />
+        <MarketChart />
+        {/* <PortfolioForm onPortfolioCreated={() => window.location.reload()} />
+            <PortfolioList />  */}
       </Box>
     </Box>
   );

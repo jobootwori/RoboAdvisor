@@ -44,11 +44,11 @@ export const navData = [
    * Overview
    */
   {
-    subheader: 'Digital Stamper ',
+    subheader: 'Robo Adviser',
     items: [
-      { title: 'Upload Files ', path: paths.dashboard.root, icon: ICONS.menuItem },
-      { title: 'My Documents ', path: paths.dashboard.two, icon: ICONS.file },
-      { title: 'Stamps Management', path: paths.dashboard.three, icon: ICONS.job },
+      { title: 'Live Market Data ', path: paths.dashboard.root, icon: ICONS.menuItem },
+      { title: 'My Portfolios ', path: paths.dashboard.two, icon: ICONS.file },
+      { title: 'Analytics', path: paths.dashboard.three, icon: ICONS.job },
     ],
   },
   /**

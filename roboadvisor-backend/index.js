@@ -19,7 +19,16 @@ app.use(cors(
 app.use(morgan('dev'));
 
 app.use('/api/auth', require('./routes/auth'));
+
+// Mount the /me route separately (without the /api/auth prefix):
+const { getUserProfile } = require('./controllers/authController');
+const { protect } = require('./middlewares/authMiddleware');
+app.get('/me', protect, getUserProfile);
+
+
 app.use('/api/portfolios', require('./routes/portfolio'));
+app.use('/api/market', require('./routes/marketData')); // ✅ Add this line
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
