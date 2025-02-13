@@ -13,7 +13,11 @@ const PortfolioSchema = new mongoose.Schema({
         }
     ],
     allocation: { type: Map, of: Number }, // e.g., { "AAPL": 50, "TSLA": 50 }
-    riskLevel: { type: String, enum: ['Low', 'Medium', 'High'], required: true }
+    riskLevel: { type: String, enum: ['Low', 'Medium', 'High'], required: true },
+    investmentGoals: { type: String, enum:['Long-term', 'Short-term'], required: true }, // Long-term, Short-term
+    timeHorizon: { type: Number, required: true }, // Years
+    recommendedAllocation: { type: Object }, // AI-generated asset allocation
+    riskAssessment: { type: String } // Computed risk level
 }, { timestamps: true });
 
 module.exports = mongoose.model('Portfolio', PortfolioSchema);
