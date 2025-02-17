@@ -2,13 +2,15 @@
 
 import { useState } from 'react';
 import axios from 'axios';
-import { TextField, Button, MenuItem } from '@mui/material';
+import { TextField, Button, Stack, MenuItem } from '@mui/material';
 
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 
 export default function PortfolioForm({ onPortfolioCreated }) {
   const [name, setName] = useState('');
   const [riskLevel, setRiskLevel] = useState('');
+  const [investmentGoals, setInvestmentGoals] = useState('');
+  const [timeHorizon, setTimeHorizon] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,7 +18,7 @@ export default function PortfolioForm({ onPortfolioCreated }) {
       const token = localStorage.getItem('accessToken');
       const response = await axios.post(
         `${SERVER_URL}/api/portfolios`,
-        { name, riskLevel, assets: [] }, // Empty assets initially
+        { name, riskLevel, investmentGoals, timeHorizon, assets: [] }, // Empty assets initially
         { headers: { Authorization: `Bearer ${token}` } }
       );
       onPortfolioCreated(response.data); // Update parent component
@@ -27,17 +29,18 @@ export default function PortfolioForm({ onPortfolioCreated }) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <TextField
+      <Stack spacing={3}>
+      <TextField spacing={3}
         label="Portfolio Name"
-        fullWidth
+        sx={{ width: { xs: '100%', sm: '80%', md: '60%', lg: '50%' } }}
         value={name}
         onChange={(e) => setName(e.target.value)}
         required
       />
-      <TextField
+      <TextField spacing={3}
         select
         label="Risk Level"
-        fullWidth
+        sx={{ width: { xs: '100%', sm: '80%', md: '60%', lg: '50%' } }}
         value={riskLevel}
         onChange={(e) => setRiskLevel(e.target.value)}
         required
@@ -49,7 +52,7 @@ export default function PortfolioForm({ onPortfolioCreated }) {
       <TextField
         select
         label="Investment Goal"
-        fullWidth
+        sx={{ width: { xs: '100%', sm: '80%', md: '60%', lg: '50%' } }}
         value={investmentGoals}
         onChange={(e) => setInvestmentGoals(e.target.value)}
         required
@@ -61,16 +64,17 @@ export default function PortfolioForm({ onPortfolioCreated }) {
 
       <TextField
         label="Time Horizon (Years)"
-        fullWidth
+        sx={{ width: { xs: '100%', sm: '80%', md: '60%', lg: '50%' } }}
         type="number"
         value={timeHorizon}
         onChange={(e) => setTimeHorizon(e.target.value)}
         required
       />
-
-      <Button type="submit" variant="contained">
+      </Stack>
+      <Button type="submit" variant="contained"   sx={{ mt: 1.5 , mb: 1.5}} >
         Create Portfolio
       </Button>
+      
     </form>
   );
 }

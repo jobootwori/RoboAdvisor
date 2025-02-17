@@ -57,6 +57,8 @@ export default function PortfolioList() {
           <TableRow>
             <TableCell>Portfolio Name</TableCell>
             <TableCell>Risk Level</TableCell>
+            <TableCell>Risk Assessment</TableCell>
+            <TableCell>Recommended Allocation</TableCell>
             <TableCell>Actions</TableCell>
           </TableRow>
         </TableHead>
@@ -67,8 +69,12 @@ export default function PortfolioList() {
               <TableCell>{portfolio.riskLevel}</TableCell>
               <TableCell>{portfolio.riskAssessment}</TableCell>
               <TableCell>
-                {portfolio.recommendedAllocation?.stockAllocation}% Stocks,
-                {portfolio.recommendedAllocation?.bondAllocation}% Bonds
+               {portfolio.recommendedAllocation?.allocation?.stockAllocation ?? "N/A"}% Stocks,{' '}
+                {portfolio.recommendedAllocation?.allocation?.bondAllocation ?? "N/A"}% Bonds
+                <br />
+                <Typography variant="body2" color="textSecondary">
+                  {portfolio.recommendedAllocation?.advice ?? ""}
+                </Typography> 
               </TableCell>
               <TableCell>
                 <Button onClick={() => router.push(`/dashboard/portfolio/${portfolio._id}`)}>
