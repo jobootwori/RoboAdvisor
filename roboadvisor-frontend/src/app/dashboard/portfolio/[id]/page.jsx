@@ -48,10 +48,11 @@ export default function PortfolioDetail() {
       const response = await axios.get(`${SERVER_URL}/api/portfolios/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
+      setPortfolio(response.data);
 
       console.log('✅ Portfolio fetched:', response.data);
 
-      setPortfolio(response.data);
+      //   setPortfolio(response.data);
     } catch (error) {
       console.error('Error fetching portfolio:', error);
       setError('Error fetching portfolio data. Please try again later.');

@@ -69,7 +69,7 @@ async function getPortfolioById(req, res) {
   try {
     const portfolio = await Portfolio.findOne({
       _id: req.params.id,
-      user: req.user.id, // Ensure the portfolio belongs to the user
+      // user: req.user.id, // Ensure the portfolio belongs to the user
     });
 
     if (!portfolio) {
