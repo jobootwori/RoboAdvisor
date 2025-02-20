@@ -157,12 +157,9 @@ roboadvisor-backend/
 - **Optional AI Integration:**
   - The project can integrate with OpenAI’s API to generate dynamic, personalized investment advice. This integration is managed in the `utils/openaiService.js` and `utils/portfolioAI.js` modules.
 
-## Contributing
-Contributions are welcome! Feel free to fork the repository and submit pull requests. Please follow standard coding practices and ensure your changes are well-tested.
-
 ## License
 This project is licensed under the MIT License.
 
 ## Contact
-For questions or support, please contact [Your Name] at [your-email@example.com].
+For questions or support, please contact [Your Name] at [jobootwori@gmail.com].
 
